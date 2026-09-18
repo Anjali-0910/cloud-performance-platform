@@ -68,4 +68,10 @@ jobs:
           exit 1
 
       - name: Run k6 performance test
-        run: k6 run performance-test.js
+        run: k6 run --summary-export=k6-summary.json performance-test.js
+
+      - name: Upload performance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-performance-report
+          path: k6-summary.json
