@@ -39,3 +39,33 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+
+      - name: Install k6
+        run: |
+          curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+
+      - name: Start application
+        run: |
+          docker run -d \
+            --name cloud-performance-api \
+            -p 8080:8080 \
+            cloud-performance-api:${{ github.sha }}
+
+      - name: Wait for application
+        run: |
+          for i in {1..30}; do
+            if curl -fs http://localhost:8080/api/health; then
+              echo "Application is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Application failed to start"
+          docker logs cloud-performance-api
+          exit 1
+
+      - name: Run k6 performance test
+        run: k6 run performance-test.js
