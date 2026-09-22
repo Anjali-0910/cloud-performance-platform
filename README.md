@@ -256,6 +256,8 @@ The resulting score is mapped to a rating:
 
 The scoring logic is implemented in `PerformanceReportService.java`.
 
+## Running Locally
+
 ### Prerequisites
 
 Install:
