@@ -1,0 +1,13 @@
+# Backend
+cloud-performance-api/target/
+cloud-performance-api/performance-reports/
+
+# Frontend
+cloud-performance-ui/node_modules/
+cloud-performance-ui/dist/
+
+# Environment and logs
+*.log
+.env
+.env.*
+!.env.example

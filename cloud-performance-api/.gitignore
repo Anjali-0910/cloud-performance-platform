@@ -1,0 +1,4 @@
+target/
+performance-reports/
+*.log
+.env
